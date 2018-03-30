@@ -27,28 +27,28 @@ class Doff
      */
     public function __construct(array $settings = [])
     {
-        if (empty($settings)) {
-            throw new \Exception("Unable build: Argument $settings must not be empty");
-        }
-        if (isset($settings["path"])) {
-            if (file_exists($settings["path"])) {
-                if (is_dir($settings["path"])) {
-                    if (is_readable($settings["path"]) && is_writable($settings["path"])) {
-                        $this->path = $settings["path"];
+        if (!empty($settings)) {
+            if (isset($settings["path"])) {
+                if (file_exists($settings["path"])) {
+                    if (is_dir($settings["path"])) {
+                        if (is_readable($settings["path"]) && is_writable($settings["path"])) {
+                            $this->path = $settings["path"];
+                        } else {
+                            throw new \Exception("Unable build:
+                            Path setting of data must be accessible reading and writing");
+                        }
                     } else {
-                        throw new \Exception("Unable build:
-                        Path setting of data must be accessible reading and writing");
+                        throw new \Exception("Unable build: Path setting of data must be a dir");
                     }
                 } else {
-                    throw new \Exception("Unable build: Path setting of data must be a dir");
+                    throw new \Exception("Unable build: Path setting of data does not exist");
                 }
             } else {
-                throw new \Exception("Unable build: Path setting of data does not exist");
+                throw new \Exception("Unable build: Argument $settings need 'path' param for absolut path of data");
             }
         } else {
-            throw new \Exception("Unable build: Argument $settings need 'path' param for absolut path of data");
+            throw new \Exception("Unable build: Argument $settings must not be empty");
         }
-
     }
 
     /**
