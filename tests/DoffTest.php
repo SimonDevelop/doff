@@ -32,7 +32,7 @@ class DoffTest extends TestCase
 
         // Good
         $settings = [
-          "path" => __DIR__."/data"
+          "path" => __DIR__."/data/"
         ];
         $Doff = new Doff($settings);
 
@@ -46,8 +46,12 @@ class DoffTest extends TestCase
     public function testGetterSetter($Doff)
     {
         $settings = [
-          "path" => __DIR__."/data"
+          "path" => __DIR__."/data/"
         ];
         $this->assertEquals($settings["path"], $Doff->getPath());
+        $data = $Doff->getData("test");
+
+        $this->assertEquals($data[0]['name'], "test 0");
+        $this->assertEquals($data[1]['name'], "test 1");
     }
 }
