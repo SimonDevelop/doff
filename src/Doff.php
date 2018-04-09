@@ -12,6 +12,7 @@
 namespace SimonDevelop;
 
 use Symfony\Component\Yaml\Yaml;
+use SimonDevelop\ArrayOrganize;
 
 /**
  * Class Doff
@@ -61,7 +62,7 @@ class Doff
      * @param string $dataName name of data file
      * @return array|bool return array or false for error
      */
-    public function getData($dataName)
+    public function getData(string $dataName)
     {
         $filename = strtolower($dataName);
         if (file_exists($this->path.$filename.".yml")) {
@@ -70,6 +71,34 @@ class Doff
                 return [];
             } elseif (is_array($value)) {
                 return $value;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param string $dataName name of data file
+     * @param array $filter filter param
+     * @return array|bool return array or false for error
+     */
+    public function select(string $dataName, array $filter)
+    {
+        $filename = strtolower($dataName);
+        if (file_exists($this->path.$filename.".yml")) {
+            $value = Yaml::parseFile($this->path.$filename.".yml");
+            if ($value === null) {
+                return [];
+            } elseif (is_array($value)) {
+                $datas = new ArrayOrganize($value);
+                $result = $datas->dataFilter($filter);
+                if ($result == true) {
+                    return $datas->getData();
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }

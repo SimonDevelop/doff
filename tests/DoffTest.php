@@ -40,6 +40,23 @@ class DoffTest extends TestCase
     }
 
     /**
+     * query functions test
+     * @depends testInitConstructor
+     */
+    public function testQueryFunctions($Doff)
+    {
+        $data = $Doff->select("query", ["name" => "test 2"]);
+        $this->assertEquals($data[0], ["name" => "test 2"]);
+
+        $data = $Doff->select("query", ["name" => "%test%"]);
+        $this->assertEquals($data, [
+            ["name" => "test 0"],
+            ["name" => "test 1"],
+            ["name" => "test 2"],
+        ]);
+    }
+
+    /**
      * Getters and Setters test
      * @depends testInitConstructor
      */
