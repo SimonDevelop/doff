@@ -30,9 +30,10 @@ class DoffTest extends TestCase
         }
         $this->assertEquals(true, $testException);
 
-        // Good
+        // Good and with chmod option
         $settings = [
-          "path" => __DIR__."/data/"
+          "path" => __DIR__."/data/",
+          "chmod" => 0770
         ];
         $Doff = new Doff($settings);
 

@@ -26,6 +26,21 @@ class Doff
     private $path;
 
     /**
+     * @var mixed $chmod chmod code for permissions
+     */
+    private $chmod;
+
+    /**
+     * @var string $user user unix for permissions
+     */
+    private $chown;
+
+    /**
+     * @var string $groupe group unix for permissions
+     */
+    private $chgrp;
+
+    /**
      * @param array $settings Settings
      */
     public function __construct(array $settings = [])
@@ -52,6 +67,37 @@ class Doff
                 }
             } else {
                 throw new \Exception("Unable build: Argument $settings need 'path' param for absolut path of data");
+            }
+            if (isset($settings["chmod"])) {
+                if (is_numeric($settings["chmod"])) {
+                    $this->chmod = $settings["chmod"];
+                    chmod($this->path, $this->chmod);
+                } else {
+                    throw new \Exception("Unable build: Chmod setting is not validate");
+                }
+            } else {
+                $this->chmod = null;
+            }
+            $stat = stat($settings['path']);
+            if (isset($settings["chown"])) {
+                if (is_string($settings["chown"]) && posix_getpwuid($stat['uid'])["name"] === $settings["chown"]) {
+                    $this->chown = $settings["chown"];
+                    chown($this->path, $this->chown);
+                } else {
+                    throw new \Exception("Unable build: Chown setting is not validate or does not exist");
+                }
+            } else {
+                $this->chown = null;
+            }
+            if (isset($settings["chgrp"])) {
+                if (is_string($settings["chgrp"]) && posix_getpwuid($stat['gid'])["name"] === $settings["chgrp"]) {
+                    $this->chgrp = $settings["chgrp"];
+                    chgrp($this->path, $this->chgrp);
+                } else {
+                    throw new \Exception("Unable build: Chown setting is not validate or does not exist");
+                }
+            } else {
+                $this->chgrp = null;
             }
         } else {
             throw new \Exception("Unable build: Argument $settings must not be empty");
