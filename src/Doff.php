@@ -78,23 +78,22 @@ class Doff
             } else {
                 $this->chmod = null;
             }
-            $stat = stat($settings['path']);
             if (isset($settings["chown"])) {
-                if (is_string($settings["chown"]) && posix_getpwuid($stat['uid'])["name"] === $settings["chown"]) {
+                if (is_string($settings["chown"])) {
                     $this->chown = $settings["chown"];
                     chown($this->path, $this->chown);
                 } else {
-                    throw new \Exception("Unable build: Chown setting is not validate or does not exist");
+                    throw new \Exception("Unable build: Chown setting is not validate");
                 }
             } else {
                 $this->chown = null;
             }
             if (isset($settings["chgrp"])) {
-                if (is_string($settings["chgrp"]) && posix_getpwuid($stat['gid'])["name"] === $settings["chgrp"]) {
+                if (is_string($settings["chgrp"])) {
                     $this->chgrp = $settings["chgrp"];
                     chgrp($this->path, $this->chgrp);
                 } else {
-                    throw new \Exception("Unable build: Chown setting is not validate or does not exist");
+                    throw new \Exception("Unable build: Chown setting is not validate");
                 }
             } else {
                 $this->chgrp = null;
