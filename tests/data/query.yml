@@ -1,10 +1,10 @@
-0:
-  name: 'test 0'
-1:
-  name: 'test 1'
-2:
-  name: 'test 2'
-3:
-  name: '3'
-4:
-  name: '4'
+-
+    name: 'test 0'
+-
+    name: 'test 1'
+-
+    name: 'test 2'
+-
+    name: '3'
+-
+    name: '4'

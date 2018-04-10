@@ -26,6 +26,21 @@ class Doff
     private $path;
 
     /**
+     * @var mixed $chmod chmod code for permissions
+     */
+    private $chmod;
+
+    /**
+     * @var string $user user unix for permissions
+     */
+    private $chown;
+
+    /**
+     * @var string $groupe group unix for permissions
+     */
+    private $chgrp;
+
+    /**
      * @param array $settings Settings
      */
     public function __construct(array $settings = [])
@@ -52,6 +67,37 @@ class Doff
                 }
             } else {
                 throw new \Exception("Unable build: Argument $settings need 'path' param for absolut path of data");
+            }
+            if (isset($settings["chmod"])) {
+                if (is_numeric($settings["chmod"])) {
+                    $this->chmod = $settings["chmod"];
+                    chmod($this->path, $this->chmod);
+                } else {
+                    throw new \Exception("Unable build: Chmod setting is not validate");
+                }
+            } else {
+                $this->chmod = null;
+            }
+            $stat = stat($settings['path']);
+            if (isset($settings["chown"])) {
+                if (is_string($settings["chown"]) && posix_getpwuid($stat['uid'])["name"] === $settings["chown"]) {
+                    $this->chown = $settings["chown"];
+                    chown($this->path, $this->chown);
+                } else {
+                    throw new \Exception("Unable build: Chown setting is not validate or does not exist");
+                }
+            } else {
+                $this->chown = null;
+            }
+            if (isset($settings["chgrp"])) {
+                if (is_string($settings["chgrp"]) && posix_getpwuid($stat['gid'])["name"] === $settings["chgrp"]) {
+                    $this->chgrp = $settings["chgrp"];
+                    chgrp($this->path, $this->chgrp);
+                } else {
+                    throw new \Exception("Unable build: Chown setting is not validate or does not exist");
+                }
+            } else {
+                $this->chgrp = null;
             }
         } else {
             throw new \Exception("Unable build: Argument $settings must not be empty");
@@ -81,21 +127,75 @@ class Doff
 
     /**
      * @param string $dataName name of data file
-     * @param array $filter filter param
+     * @param array $where filter param
+     * @param array $order order param
      * @return array|bool return array or false for error
      */
-    public function select(string $dataName, array $filter)
+    public function select(string $dataName, array $where, array $order = [])
     {
         $filename = strtolower($dataName);
         if (file_exists($this->path.$filename.".yml")) {
             $value = Yaml::parseFile($this->path.$filename.".yml");
             if ($value === null) {
                 return [];
-            } elseif (is_array($value)) {
+            } elseif ($value != null && is_array($value)) {
                 $datas = new ArrayOrganize($value);
-                $result = $datas->dataFilter($filter);
+                $result = $datas->dataFilter($where);
+                if ($result === true) {
+                    if (!empty($order) && isset($order["on"]) && is_string($order["on"])
+                    && isset($order["order"]) && is_string($order["order"])) {
+                        $result = $datas->dataSort($order["on"], $order["order"]);
+                        if ($result === true) {
+                            return $datas->getData();
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return $datas->getData();
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param string $dataName name of data file
+     * @param array $update update param
+     * @param array $where where param
+     * @return array|bool return array or false for error
+     */
+    public function update(string $dataName, array $update, array $where = [])
+    {
+        $filename = strtolower($dataName);
+        if (file_exists($this->path.$filename.".yml")) {
+            $value = Yaml::parseFile($this->path.$filename.".yml");
+            if ($value != null && is_array($value)) {
+                $datas = new ArrayOrganize($value);
+                $result = $datas->dataFilter($where);
                 if ($result == true) {
-                    return $datas->getData();
+                    $value2 = $datas->getData();
+
+                    foreach ($value as $k1 => $v1) {
+                        foreach ($value2 as $v2) {
+                            if ($v1 === $v2) {
+                                foreach ($v1 as $k => $v) {
+                                    if (array_key_exists($k, $update)) {
+                                        $value[$k1][$k] = $update[$k];
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    $yaml = Yaml::dump($value);
+                    file_put_contents($this->path.$filename.".yml", $yaml);
+                    return true;
                 } else {
                     return false;
                 }
