@@ -49,11 +49,15 @@ class DoffTest extends TestCase
         $data = $Doff->select("query", ["name" => "test 2"]);
         $this->assertEquals($data[0], ["name" => "test 2"]);
 
-        $data = $Doff->select("query", ["name" => "%test%"]);
+        $data = $Doff->select("query", ["name" => "%test%"], [
+            "on" => "name",
+            "order" => "DESC"
+        ]);
+
         $this->assertEquals($data, [
-            ["name" => "test 0"],
-            ["name" => "test 1"],
             ["name" => "test 2"],
+            ["name" => "test 1"],
+            ["name" => "test 0"],
         ]);
 
         // update

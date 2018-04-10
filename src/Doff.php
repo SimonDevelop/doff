@@ -81,10 +81,11 @@ class Doff
 
     /**
      * @param string $dataName name of data file
-     * @param array $filter filter param
+     * @param array $where filter param
+     * @param array $order order param
      * @return array|bool return array or false for error
      */
-    public function select(string $dataName, array $filter)
+    public function select(string $dataName, array $where, array $order = [])
     {
         $filename = strtolower($dataName);
         if (file_exists($this->path.$filename.".yml")) {
@@ -93,9 +94,19 @@ class Doff
                 return [];
             } elseif ($value != null && is_array($value)) {
                 $datas = new ArrayOrganize($value);
-                $result = $datas->dataFilter($filter);
-                if ($result == true) {
-                    return $datas->getData();
+                $result = $datas->dataFilter($where);
+                if ($result === true) {
+                    if (!empty($order) && isset($order["on"]) && is_string($order["on"])
+                    && isset($order["order"]) && is_string($order["order"])) {
+                        $result = $datas->dataSort($order["on"], $order["order"]);
+                        if ($result === true) {
+                            return $datas->getData();
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return $datas->getData();
+                    }
                 } else {
                     return false;
                 }
