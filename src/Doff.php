@@ -130,7 +130,7 @@ class Doff
      * @param array $order order param
      * @return array|bool return array or false for error
      */
-    public function select(string $dataName, array $where, array $order = [])
+    public function select(string $dataName, array $where = [], array $order = [])
     {
         $filename = strtolower($dataName);
         if (file_exists($this->path.$filename.".yml")) {
@@ -211,6 +211,80 @@ class Doff
             }
         } else {
             return false;
+        }
+    }
+
+    /**
+     * @param string $dataName name of data file
+     * @param array $insert insert param
+     * @return bool return array or false for error
+     */
+    public function insert(string $dataName, array $insert)
+    {
+        $filename = strtolower($dataName);
+        if (file_exists($this->path.$filename.".yml")) {
+            if (is_readable($this->path.$filename.".yml") && is_writable($this->path.$filename.".yml")) {
+                $value = Yaml::parseFile($this->path.$filename.".yml");
+                if ($value != null && is_array($value)) {
+                    $value[count($value)] = $insert;
+                    file_put_contents($this->path.$filename.".yml", Yaml::dump($value));
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                throw new \Exception("Unable build: ".$this->path.$filename.".yml"."
+                is not be accessible reading and/or writing");
+            }
+        } else {
+            if (is_writable($this->path)) {
+                file_put_contents($this->path.$filename.".yml", Yaml::dump($insert));
+                return true;
+            } else {
+                throw new \Exception("Unable build: ".$this->path."
+                is not be accessible writing");
+            }
+        }
+    }
+
+    /**
+     * @param string $dataName name of data file
+     * @param array $where where param
+     * @return bool return array or false for error
+     */
+    public function delete(string $dataName, array $where)
+    {
+        $filename = strtolower($dataName);
+        if (file_exists($this->path.$filename.".yml")) {
+            if (is_readable($this->path.$filename.".yml") && is_writable($this->path.$filename.".yml")) {
+                $value = Yaml::parseFile($this->path.$filename.".yml");
+                if ($value != null && is_array($value)) {
+                    $datas = new ArrayOrganize($value);
+                    $result = $datas->dataFilter($where);
+                    if ($result == true) {
+                        $value2 = $datas->getData();
+                        foreach ($value as $k1 => $v1) {
+                            foreach ($value2 as $v2) {
+                                if ($v1 === $v2 && isset($value[$k1])) {
+                                    unset($value[$k1]);
+                                }
+                            }
+                        }
+                        $yaml = Yaml::dump($value);
+                        file_put_contents($this->path.$filename.".yml", $yaml);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                throw new \Exception("Unable build: ".$this->path.$filename.".yml"."
+                is not be accessible reading and/or writing");
+            }
+        } else {
+            throw new \Exception("Unable build: ".$this->path.$filename.".yml"." does not exist");
         }
     }
 

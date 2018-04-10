@@ -73,6 +73,33 @@ class DoffTest extends TestCase
 
         $result = $Doff->update("users", ["email" => "test4@gmail.com"], ["id" => 66]);
         $this->assertEquals($result, true);
+
+        // insert
+        $data = $Doff->select("users");
+        $this->assertEquals(count($data), 8);
+
+        $result = $Doff->insert("users", [
+            "id" => 72,
+            "email" => "world@test.fr"
+        ]);
+        $this->assertEquals($result, true);
+
+        $data = $Doff->select("users");
+        $this->assertEquals(count($data), 9);
+        $this->assertEquals($data[8], [
+            "id" => 72,
+            "email" => "world@test.fr"
+        ]);
+
+        // delete
+        $result = $Doff->delete("users", [
+            "id" => 72,
+            "email" => "world@test.fr"
+        ]);
+        $this->assertEquals($result, true);
+
+        $data = $Doff->select("users");
+        $this->assertEquals(count($data), 8);
     }
 
     /**
