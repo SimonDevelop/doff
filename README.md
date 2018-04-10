@@ -23,30 +23,30 @@ $doff = new Doff("/path/of/data/files/");
 In your `/path/of/data/files`
 ```yaml
 # test.yml
-0:
-  name: 'test 0'
-1:
-  name: 'test 1'
-2:
-  name: 'test 2'
-3:
-  name: '3'
-4:
-  name: '4'
+-
+    name: 'test 0'
+-
+    name: 'test 1'
+-
+    name: 'test 2'
+-
+    name: '3'
+-
+    name: '4'
 ```
 
 ```php
 <?php
 //...
 
-// Example with like query
-$datas = $doff->select("test", ["name" => "%test%"]);
+// Example with like query for query.yml
+$datas = $doff->select("query", ["name" => "%test%"]);
 
-// $datas = [
-//   ["name" => "test 0"],
-//   ["name" => "test 1"],
-//   ["name" => "test 2"]
-// ];
+$datas = [
+  ["name" => "test 0"],
+  ["name" => "test 1"],
+  ["name" => "test 2"]
+];
 ```
 
 Check this [docs](https://github.com/SimonDevelop/doff/blob/master/docs/introduction.md) for more.

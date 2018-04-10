@@ -45,6 +45,7 @@ class DoffTest extends TestCase
      */
     public function testQueryFunctions($Doff)
     {
+        // select
         $data = $Doff->select("query", ["name" => "test 2"]);
         $this->assertEquals($data[0], ["name" => "test 2"]);
 
@@ -54,6 +55,19 @@ class DoffTest extends TestCase
             ["name" => "test 1"],
             ["name" => "test 2"],
         ]);
+
+        // update
+        $data = $Doff->select("users", ["id" => 66]);
+        $this->assertEquals($data[0]["email"], "test4@gmail.com");
+
+        $result = $Doff->update("users", ["email" => "test@horyzone.fr"], ["id" => 66]);
+        $this->assertEquals($result, true);
+
+        $data2 = $Doff->select("users", ["id" => 66]);
+        $this->assertEquals($data2[0]["email"], "test@horyzone.fr");
+
+        $result = $Doff->update("users", ["email" => "test4@gmail.com"], ["id" => 66]);
+        $this->assertEquals($result, true);
     }
 
     /**
@@ -66,9 +80,12 @@ class DoffTest extends TestCase
           "path" => __DIR__."/data/"
         ];
         $this->assertEquals($settings["path"], $Doff->getPath());
-        $data = $Doff->getData("test");
+        $data = $Doff->getData("query");
 
         $this->assertEquals($data[0]['name'], "test 0");
         $this->assertEquals($data[1]['name'], "test 1");
+        $this->assertEquals($data[2]['name'], "test 2");
+        $this->assertEquals($data[3]['name'], "3");
+        $this->assertEquals($data[4]['name'], "4");
     }
 }
