@@ -371,4 +371,28 @@ class Doff
     {
         return $this->path;
     }
+
+    /**
+     * @return int|null Chmod code
+     */
+    public function getChmod()
+    {
+        return $this->chmod;
+    }
+
+    /**
+     * @return string|null Chown user unix
+     */
+    public function getChown()
+    {
+        return $this->chown;
+    }
+
+    /**
+     * @return string|null Chgrp group unix
+     */
+    public function getChgrp()
+    {
+        return $this->chgrp;
+    }
 }
