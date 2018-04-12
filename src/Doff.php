@@ -105,19 +105,24 @@ class Doff
 
     /**
      * @param string $dataName name of data file
-     * @return array|bool return array or false for error
+     * @return array|bool returns array or false if error
      */
     public function getData(string $dataName)
     {
         $filename = strtolower($dataName);
         if (file_exists($this->path.$filename.".yml")) {
-            $value = Yaml::parseFile($this->path.$filename.".yml");
-            if ($value === null) {
-                return [];
-            } elseif (is_array($value)) {
-                return $value;
+            if (is_readable($this->path.$filename.".yml")) {
+                $value = Yaml::parseFile($this->path.$filename.".yml");
+                if ($value === null) {
+                    return [];
+                } elseif (is_array($value)) {
+                    return $value;
+                } else {
+                    return false;
+                }
             } else {
-                return false;
+                throw new \Exception("Unable build: ".$this->path.$filename.".yml"."
+                is not be accessible reading");
             }
         } else {
             return false;
@@ -126,9 +131,35 @@ class Doff
 
     /**
      * @param string $dataName name of data file
+     * @param array $data data to set in the file
+     * @return bool returns true if set or exception if error
+     */
+    public function setData(string $dataName, array $data)
+    {
+        $filename = strtolower($dataName);
+        if (file_exists($this->path.$filename.".yml")) {
+            if (is_writable($this->path.$filename.".yml")) {
+                file_put_contents($this->path.$filename.".yml", Yaml::dump($data));
+                return true;
+            } else {
+                throw new \Exception("Unable build: ".$this->path.$filename.".yml"."
+                is not be accessible writing");
+            }
+        } else {
+            if (is_writable($this->path)) {
+                file_put_contents($this->path.$filename.".yml", Yaml::dump($data));
+                return true;
+            } else {
+                throw new \Exception("Unable build: ".$this->path." is not be accessible writing");
+            }
+        }
+    }
+
+    /**
+     * @param string $dataName name of data file
      * @param array $where filter param
      * @param array $order order param
-     * @return array|bool return array or false for error
+     * @return array|bool returns array if selected or false if error
      */
     public function select(string $dataName, array $where = [], array $order = [])
     {
@@ -172,7 +203,7 @@ class Doff
      * @param string $dataName name of data file
      * @param array $update update param
      * @param array $where where param
-     * @return array|bool return array or false for error
+     * @return bool returns true if updated or false if error
      */
     public function update(string $dataName, array $update, array $where = [])
     {
@@ -217,7 +248,7 @@ class Doff
     /**
      * @param string $dataName name of data file
      * @param array $insert insert param
-     * @return bool return array or false for error
+     * @return bool returns true if inserted or false if error
      */
     public function insert(string $dataName, array $insert)
     {
@@ -250,7 +281,7 @@ class Doff
     /**
      * @param string $dataName name of data file
      * @param array $where where param
-     * @return bool return array or false for error
+     * @return bool returns true if deleted or false if error
      */
     public function delete(string $dataName, array $where)
     {
@@ -285,6 +316,51 @@ class Doff
             }
         } else {
             throw new \Exception("Unable build: ".$this->path.$filename.".yml"." does not exist");
+        }
+    }
+
+    /**
+     * @param array $datas the tables for the merger
+     * @return array return merged of tables or false for error
+     */
+    public function fusion(array $datas)
+    {
+        $merged = [];
+        if (!empty($datas)) {
+            foreach ($datas as $k1 => $v1) {
+                if (is_array($datas)) {
+                    foreach ($v1 as $k2 => $v2) {
+                        if (!in_array($v2, $merged)) {
+                            $merged[] = $v2;
+                        }
+                    }
+                } else {
+                    throw new \Exception("Unable build: Bad data array format");
+                }
+            }
+            return $merged;
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * @param string $dataName name of data file to remove
+     * @return bool returns true if deleted or false if file not found
+     */
+    public function remove(string $dataName)
+    {
+        $filename = strtolower($dataName);
+        if (file_exists($this->path.$filename.".yml")) {
+            if (is_writable($this->path.$filename.".yml")) {
+                unlink($this->path.$filename.".yml");
+                return true;
+            } else {
+                throw new \Exception("Unable build: ".$this->path.$filename.".yml"."
+                is not be accessible writing");
+            }
+        } else {
+            return false;
         }
     }
 
