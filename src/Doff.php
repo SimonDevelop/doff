@@ -69,7 +69,7 @@ class Doff
                 throw new \Exception("Unable build: Argument $settings need 'path' param for absolut path of data");
             }
             if (isset($settings["chmod"])) {
-                if (is_numeric($settings["chmod"])) {
+                if (is_int($settings["chmod"])) {
                     $this->chmod = $settings["chmod"];
                     chmod($this->path, $this->chmod);
                 } else {
