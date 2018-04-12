@@ -100,6 +100,72 @@ class DoffTest extends TestCase
 
         $data = $Doff->select("users");
         $this->assertEquals(count($data), 8);
+
+        // fusion
+        $array1 = [
+            [
+                "id" => 1,
+                "email" => "world@test1.fr"
+            ],
+            [
+                "id" => 2,
+                "email" => "world@test2.fr"
+            ],
+            [
+                "id" => 3,
+                "email" => "world@test3.fr"
+            ]
+        ];
+        $array2 = [
+            [
+                "id" => 3,
+                "email" => "world@test3.fr"
+            ],
+            [
+                "id" => 4,
+                "email" => "world@test4.fr"
+            ],
+            [
+                "id" => 5,
+                "email" => "world@test5.fr"
+            ]
+        ];
+        $array = [$array1, $array2];
+        $data = $Doff->fusion($array);
+        $this->assertEquals($data, [
+            [
+                "id" => 1,
+                "email" => "world@test1.fr"
+            ],
+            [
+                "id" => 2,
+                "email" => "world@test2.fr"
+            ],
+            [
+                "id" => 3,
+                "email" => "world@test3.fr"
+            ],
+            [
+                "id" => 4,
+                "email" => "world@test4.fr"
+            ],
+            [
+                "id" => 5,
+                "email" => "world@test5.fr"
+            ]
+        ]);
+
+        // setData and remove
+        $result = $Doff->setData("remove", [
+            "id" => 1,
+            "email" => "test@remove.fr"
+        ]);
+        $this->assertEquals($result, true);
+        $this->assertEquals(file_exists($Doff->getPath()."remove.yml"), true);
+
+        $result = $Doff->remove("remove");
+        $this->assertEquals($result, true);
+        $this->assertEquals(file_exists($Doff->getPath()."remove.yml"), false);
     }
 
     /**
