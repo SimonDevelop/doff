@@ -35,6 +35,7 @@ public function simpleMethod($a)
 ## Testing
 
 ```bash
-./vendor/bin/phpunit
-./vendor/bin/phpcs
+composer phpunit
+composer phpcs
+composer phpstan
 ```

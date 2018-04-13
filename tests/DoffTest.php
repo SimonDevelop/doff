@@ -41,12 +41,11 @@ class DoffTest extends TestCase
     }
 
     /**
-     * query functions test
+     * Select function test
      * @depends testInitConstructor
      */
-    public function testQueryFunctions($Doff)
+    public function testSelect($Doff)
     {
-        // select
         $data = $Doff->select("query", ["name" => "test 2"]);
         $this->assertEquals($data[0], ["name" => "test 2"]);
 
@@ -60,8 +59,14 @@ class DoffTest extends TestCase
             ["name" => "test 1"],
             ["name" => "test 0"],
         ]);
+    }
 
-        // update
+    /**
+     * Update function test
+     * @depends testInitConstructor
+     */
+    public function testUpdate($Doff)
+    {
         $data = $Doff->select("users", ["id" => 66]);
         $this->assertEquals($data[0]["email"], "test4@gmail.com");
 
@@ -73,8 +78,14 @@ class DoffTest extends TestCase
 
         $result = $Doff->update("users", ["email" => "test4@gmail.com"], ["id" => 66]);
         $this->assertEquals($result, true);
+    }
 
-        // insert
+    /**
+     * Insert function test
+     * @depends testInitConstructor
+     */
+    public function testInsert($Doff)
+    {
         $data = $Doff->select("users");
         $this->assertEquals(count($data), 8);
 
@@ -90,8 +101,14 @@ class DoffTest extends TestCase
             "id" => 72,
             "email" => "world@test.fr"
         ]);
+    }
 
-        // delete
+    /**
+     * Delete function test
+     * @depends testInitConstructor
+     */
+    public function testDelete($Doff)
+    {
         $result = $Doff->delete("users", [
             "id" => 72,
             "email" => "world@test.fr"
@@ -100,8 +117,14 @@ class DoffTest extends TestCase
 
         $data = $Doff->select("users");
         $this->assertEquals(count($data), 8);
+    }
 
-        // fusion
+    /**
+     * Fusion function test
+     * @depends testInitConstructor
+     */
+    public function testFusion($Doff)
+    {
         $array1 = [
             [
                 "id" => 1,
@@ -154,8 +177,14 @@ class DoffTest extends TestCase
                 "email" => "world@test5.fr"
             ]
         ]);
+    }
 
-        // setData and remove
+    /**
+     * Remove and setData function test
+     * @depends testInitConstructor
+     */
+    public function testRemoveAndSetData($Doff)
+    {
         $result = $Doff->setData("remove", [
             "id" => 1,
             "email" => "test@remove.fr"
@@ -185,5 +214,7 @@ class DoffTest extends TestCase
         $this->assertEquals($data[2]['name'], "test 2");
         $this->assertEquals($data[3]['name'], "3");
         $this->assertEquals($data[4]['name'], "4");
+
+        $this->assertEquals($Doff->getChmod(), 504);
     }
 }
