@@ -26,19 +26,19 @@ class Doff
     private $path;
 
     /**
-     * @var mixed $chmod chmod code for permissions
+     * @var mixed|null $chmod chmod code for permissions
      */
-    private $chmod;
+    private $chmod = null;
 
     /**
-     * @var string $user user unix for permissions
+     * @var string|null $user user unix for permissions
      */
-    private $chown;
+    private $chown = null;
 
     /**
-     * @var string $groupe group unix for permissions
+     * @var string|null $groupe group unix for permissions
      */
-    private $chgrp;
+    private $chgrp = null;
 
     /**
      * @param array $settings Settings
@@ -71,32 +71,23 @@ class Doff
             if (isset($settings["chmod"])) {
                 if (is_int($settings["chmod"])) {
                     $this->chmod = $settings["chmod"];
-                    chmod($this->path, $this->chmod);
                 } else {
                     throw new \Exception("Unable build: Chmod setting is not validate");
                 }
-            } else {
-                $this->chmod = null;
             }
             if (isset($settings["chown"])) {
                 if (is_string($settings["chown"])) {
                     $this->chown = $settings["chown"];
-                    chown($this->path, $this->chown);
                 } else {
                     throw new \Exception("Unable build: Chown setting is not validate");
                 }
-            } else {
-                $this->chown = null;
             }
             if (isset($settings["chgrp"])) {
                 if (is_string($settings["chgrp"])) {
                     $this->chgrp = $settings["chgrp"];
-                    chgrp($this->path, $this->chgrp);
                 } else {
                     throw new \Exception("Unable build: Chown setting is not validate");
                 }
-            } else {
-                $this->chgrp = null;
             }
         } else {
             throw new \Exception("Unable build: Argument $settings must not be empty");
@@ -148,7 +139,11 @@ class Doff
         } else {
             if (is_writable($this->path)) {
                 file_put_contents($this->path.$filename.".yml", Yaml::dump($data));
-                return true;
+                if ($this->setPermissions($this->path.$filename.".yml")) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 throw new \Exception("Unable build: ".$this->path." is not be accessible writing");
             }
@@ -270,7 +265,11 @@ class Doff
         } else {
             if (is_writable($this->path)) {
                 file_put_contents($this->path.$filename.".yml", Yaml::dump($insert));
-                return true;
+                if ($this->setPermissions($this->path.$filename.".yml")) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 throw new \Exception("Unable build: ".$this->path."
                 is not be accessible writing");
@@ -394,5 +393,33 @@ class Doff
     public function getChgrp()
     {
         return $this->chgrp;
+    }
+
+    /**
+     * @param string $path Path of file or folder
+     * @return bool Set permission
+     */
+    private function setPermissions(string $path)
+    {
+        if (file_exists($path)) {
+            if ($this->chmod != null) {
+                if (!chmod($path, $this->chmod)) {
+                    return false;
+                }
+            }
+            if ($this->chown != null) {
+                if (!chown($path, $this->chown)) {
+                    return false;
+                }
+            }
+            if ($this->chgrp != null) {
+                if (!chgrp($path, $this->chgrp)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }
