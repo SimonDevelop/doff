@@ -6,7 +6,7 @@ All contributions to array-organize are very much encouraged, and we do our best
 
 ## Coding Standards
 
-Check the [Code of Conduct Guidelines](https://github.com/SimonDevelop/doff/blob/master/.github/CONTRIBUTING.md).
+Check the [Code of Conduct Guidelines](https://github.com/SimonDevelop/doff/blob/master/.github/CODE_OF_CONDUCT.md).
 
 ## Maintaining (for push only developers)
 
