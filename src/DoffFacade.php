@@ -11,8 +11,6 @@
 
 namespace SimonDevelop;
 
-use Symfony\Component\Yaml\Yaml;
-use SimonDevelop\ArrayOrganize;
 use SimonDevelop\Doff;
 
 /**
