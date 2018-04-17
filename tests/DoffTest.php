@@ -180,6 +180,49 @@ class DoffTest extends TestCase
     }
 
     /**
+     * Fission function test
+     * @depends testInitConstructor
+     */
+    public function testFission($Doff)
+    {
+        $array1 = [
+            [
+                "id" => 1,
+                "email" => "test@gmail.com"
+            ],
+            [
+                "id" => 2,
+                "email" => "test@hotmail.com"
+            ],
+            [
+                "id" => 42,
+                "email" => "test@horyzone.fr"
+            ]
+        ];
+        $array2 = [
+            [
+                "id" => 42,
+                "email" => "test@horyzone.fr"
+            ],
+            [
+                "id" => 57,
+                "email" => "test@test.com"
+            ]
+        ];
+        $data = $Doff->fission($array1, $array2);
+        $this->assertEquals($data, [
+            [
+                "id" => 1,
+                "email" => "test@gmail.com"
+            ],
+            [
+                "id" => 2,
+                "email" => "test@hotmail.com"
+            ]
+        ]);
+    }
+
+    /**
      * Remove and setData function test
      * @depends testInitConstructor
      */

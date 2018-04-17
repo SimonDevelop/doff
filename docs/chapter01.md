@@ -238,6 +238,49 @@ $merged = $obj->fusion([$array1, $array2]);
 // ];
 ```
 
+### fission (array $datas, array $datasToRemove)
+```php
+<?php
+$array1 = [
+    [
+        "id" => 1,
+        "email" => "test@gmail.com"
+    ],
+    [
+        "id" => 2,
+        "email" => "test@hotmail.com"
+    ],
+    [
+        "id" => 42,
+        "email" => "test@horyzone.fr"
+    ]
+];
+$array2 = [
+    [
+        "id" => 42,
+        "email" => "test@horyzone.fr"
+    ],
+    [
+        "id" => 57,
+        "email" => "test@test.com"
+    ]
+];
+
+$fission = $obj->fission([$array1, $array2]);
+
+// $fission return this array
+// $fission = [
+//     [
+//         "id" => 1,
+//         "email" => "test@gmail.com"
+//     ],
+//     [
+//         "id" => 2,
+//         "email" => "test@hotmail.com"
+//     ]
+// ];
+```
+
 ### remove (string $dataName)
 ```php
 <?php
