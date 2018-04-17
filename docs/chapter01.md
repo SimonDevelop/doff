@@ -216,6 +216,9 @@ $array2 = [
 ];
 
 $merged = $obj->fusion([$array1, $array2]);
+// or use facade with
+// use SimonDevelop\DoffFacade;
+// $merged = DoffFacade::fusion([$array1, $array2]);
 
 // $merged return this array
 // $merged = [
@@ -266,7 +269,10 @@ $array2 = [
     ]
 ];
 
-$fission = $obj->fission([$array1, $array2]);
+$fission = $obj->fission($array1, $array2);
+// or use facade with
+// use SimonDevelop\DoffFacade;
+// $fission = DoffFacade::fission($array1, $array2);
 
 // $fission return this array
 // $fission = [
