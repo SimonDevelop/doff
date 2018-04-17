@@ -344,6 +344,31 @@ class Doff
     }
 
     /**
+     * @param array $datas the tables base
+     * @param array $datasToRemove the tables for fission
+     * @return array return fission of tables
+     */
+    public function fission(array $datas, array $datasToRemove)
+    {
+        if (!empty($datas)) {
+            if (!empty($datasToRemove)) {
+                foreach ($datasToRemove as $k1 => $v1) {
+                    foreach ($datas as $k2 => $v2) {
+                        if ($v2 == $v1) {
+                            unset($datas[$k2]);
+                        }
+                    }
+                }
+                return $datas;
+            } else {
+                return $datas;
+            }
+        } else {
+            return [];
+        }
+    }
+
+    /**
      * @param string $dataName name of data file to remove
      * @return bool returns true if deleted or false if file not found
      */
