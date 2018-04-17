@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is the array-organize package.
+ * This file is the doff package.
  *
  * (c) Simon Micheneau <contact@simon-micheneau.fr>
  *
@@ -49,7 +49,7 @@ class Doff
             if (isset($settings["path"])) {
                 if (file_exists($settings["path"])) {
                     if (is_dir($settings["path"])) {
-                        if (is_readable($settings["path"]) && is_writable($settings["path"])) {
+                        if (is_readable($settings["path"])) {
                             if (substr($settings["path"], -1) == "/") {
                                 $this->path = $settings["path"];
                             } else {
@@ -57,7 +57,7 @@ class Doff
                             }
                         } else {
                             throw new \Exception("Unable build:
-                            Path setting of data must be accessible reading and writing");
+                            Path setting of data must be accessible reading");
                         }
                     } else {
                         throw new \Exception("Unable build: Path setting of data must be a dir");
