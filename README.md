@@ -1,7 +1,7 @@
 [![version](https://img.shields.io/badge/Version-0.0.9-brightgreen.svg)](https://github.com/SimonDevelop/doff/releases/tag/0.0.9)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.1.3-8892BF.svg)](https://php.net/)
 [![Build Status](https://travis-ci.org/SimonDevelop/doff.svg?branch=master)](https://travis-ci.org/SimonDevelop/doff)
-[![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/SimonDevelop/array-organize/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/SimonDevelop/doff/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSimonDevelop%2Fdoff.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSimonDevelop%2Fdoff?ref=badge_shield)
 # doff
 DOFF for Data Oriented Flat-File, Library for managing yaml table data via query functions.
