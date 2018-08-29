@@ -7,7 +7,7 @@
 // Settings
 $settings = [
     "path" => "/path/of/data/files/",
-    "chmod" => 0770, // optionnal (only integer value)
+    "chmod" => 0770, // optionnal, octal value (only string or integer type)
     "chown" => "userUnix", // optionnal
     "chgrp" => "groupUnix" // optionnal
 ];
