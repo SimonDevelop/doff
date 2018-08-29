@@ -71,6 +71,8 @@ class Doff
             if (isset($settings["chmod"])) {
                 if (is_int($settings["chmod"])) {
                     $this->chmod = $settings["chmod"];
+                } elseif (is_string($settings["chmod"])) {
+                    $this->chmod = octdec($settings["chmod"]);
                 } else {
                     throw new \Exception("Unable build: Chmod setting is not validate");
                 }

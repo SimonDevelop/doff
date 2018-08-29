@@ -33,7 +33,7 @@ class DoffTest extends TestCase
         // Good and with chmod option
         $settings = [
           "path" => __DIR__."/data/",
-          "chmod" => 0770
+          "chmod" => "0770"
         ];
         $Doff = new Doff($settings);
 
