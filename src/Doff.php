@@ -256,10 +256,10 @@ class Doff
                 if ($value != null && is_array($value)) {
                     $value[count($value)] = $insert;
                     file_put_contents($this->path.$filename.".yml", Yaml::dump($value));
-                    return true;
                 } else {
-                    return false;
+                    file_put_contents($this->path.$filename.".yml", Yaml::dump([$insert]));
                 }
+                return true;
             } else {
                 throw new \Exception("Unable build: ".$this->path.$filename.".yml"."
                 is not be accessible reading and/or writing");
