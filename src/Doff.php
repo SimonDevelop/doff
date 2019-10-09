@@ -266,7 +266,7 @@ class Doff
             }
         } else {
             if (is_writable($this->path)) {
-                file_put_contents($this->path.$filename.".yml", Yaml::dump($insert));
+                file_put_contents($this->path.$filename.".yml", Yaml::dump([$insert]));
                 if ($this->setPermissions($this->path.$filename.".yml")) {
                     return true;
                 } else {
