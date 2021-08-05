@@ -66,7 +66,7 @@ class Doff
                     throw new \Exception("Unable build: Path setting of data does not exist");
                 }
             } else {
-                throw new \Exception("Unable build: Argument $settings need 'path' param for absolut path of data");
+                throw new \Exception("Unable build: Argument \$settings need 'path' param for absolut path of data");
             }
             if (isset($settings["chmod"])) {
                 if (is_int($settings["chmod"])) {
@@ -92,7 +92,7 @@ class Doff
                 }
             }
         } else {
-            throw new \Exception("Unable build: Argument $settings must not be empty");
+            throw new \Exception("Unable build: Argument \$settings must not be empty");
         }
     }
 
@@ -328,15 +328,11 @@ class Doff
     {
         $merged = [];
         if (!empty($datas)) {
-            foreach ($datas as $k1 => $v1) {
-                if (is_array($datas)) {
-                    foreach ($v1 as $k2 => $v2) {
-                        if (!in_array($v2, $merged)) {
-                            $merged[] = $v2;
-                        }
+            foreach ($datas as $v1) {
+                foreach ($v1 as $v2) {
+                    if (!in_array($v2, $merged)) {
+                        $merged[] = $v2;
                     }
-                } else {
-                    throw new \Exception("Unable build: Bad data array format");
                 }
             }
             return $merged;
@@ -354,7 +350,7 @@ class Doff
     {
         if (!empty($datas)) {
             if (!empty($datasToRemove)) {
-                foreach ($datasToRemove as $k1 => $v1) {
+                foreach ($datasToRemove as $v1) {
                     foreach ($datas as $k2 => $v2) {
                         if ($v2 == $v1) {
                             unset($datas[$k2]);
