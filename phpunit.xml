@@ -7,6 +7,11 @@
   stopOnIncomplete="false"
   stopOnSkipped="false"
   stopOnRisky="false">
+    <coverage processUncoveredFiles="true">
+      <include>
+        <directory suffix=".php">src</directory>
+      </include>
+    </coverage>
     <testsuite name="tests">
         <directory>./tests</directory>
     </testsuite>

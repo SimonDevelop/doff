@@ -41,11 +41,17 @@
       "@phpstan-src",
       "@phpstan-tests"
     ],
-    "phpunit": "phpunit --colors --do-not-cache-result",
+    "phpunit": "XDEBUG_MODE=coverage vendor/bin/phpunit --colors --do-not-cache-result --coverage-clover=coverage.xml",
+    "phpunit-dev": "XDEBUG_MODE=coverage vendor/bin/phpunit --colors --do-not-cache-result --coverage-html ./coverage",
     "test": [
-      "@phpunit",
       "@phpcs",
-      "@phpstan"
+      "@phpstan",
+      "@phpunit"
+    ],
+    "test-dev": [
+      "@phpcs",
+      "@phpstan",
+      "@phpunit-dev"
     ]
   }
 }

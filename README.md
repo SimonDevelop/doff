@@ -1,6 +1,7 @@
 [![version](https://img.shields.io/badge/Version-0.2.0-brightgreen.svg)](https://github.com/SimonDevelop/doff/releases/tag/0.2.0)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.3-8892BF.svg)](https://php.net/)
 [![Github Actions PHP](https://github.com/SimonDevelop/doff/workflows/PHP/badge.svg)](https://github.com/SimonDevelop/doff/actions)
+[![codecov](https://codecov.io/gh/SimonDevelop/doff/branch/master/graph/badge.svg?token=UO20VQKD9C)](https://codecov.io/gh/SimonDevelop/doff)
 [![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/SimonDevelop/doff/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FSimonDevelop%2Fdoff.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FSimonDevelop%2Fdoff?ref=badge_shield)
 # doff

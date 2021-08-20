@@ -5,10 +5,15 @@ namespace SimonDevelop\Test;
 use \PHPUnit\Framework\TestCase;
 use \SimonDevelop\Doff;
 
+/**
+ * @coversDefaultClass \SimonDevelop\Doff
+ * @covers ::__construct
+ */
 class DoffTest extends TestCase
 {
     /**
      * Constructor test
+     * @uses \SimonDevelop\Doff
      */
     public function testInitConstructor()
     {
@@ -37,12 +42,43 @@ class DoffTest extends TestCase
         ];
         $Doff = new Doff($settings);
 
+        $settings = [
+            "path" => __DIR__."/data/",
+            "chmod" => 0770
+        ];
+        $Doff = new Doff($settings);
+
         return $Doff;
+    }
+
+    /**
+     * Constructor test with not path
+     * @uses \SimonDevelop\Doff
+     */
+    public function testInitConstructorWithNotPath()
+    {
+        $this->expectException(\Exception::class);
+        new Doff(["test" => []]);
+    }
+
+    /**
+     * Constructor test bad data
+     * @uses \SimonDevelop\Doff
+     */
+    public function testInitConstructorBadData()
+    {
+        $this->expectException(\Exception::class);
+        new Doff([
+            "path" => __DIR__."/data/",
+            "chmod" => []
+        ]);
     }
 
     /**
      * Select function test
      * @depends testInitConstructor
+     * @covers ::select
+     * @uses \SimonDevelop\Doff
      */
     public function testSelect($Doff)
     {
@@ -64,6 +100,9 @@ class DoffTest extends TestCase
     /**
      * Update function test
      * @depends testInitConstructor
+     * @covers ::select
+     * @covers ::update
+     * @uses \SimonDevelop\Doff
      */
     public function testUpdate($Doff)
     {
@@ -83,6 +122,9 @@ class DoffTest extends TestCase
     /**
      * Insert function test
      * @depends testInitConstructor
+     * @covers ::select
+     * @covers ::insert
+     * @uses \SimonDevelop\Doff
      */
     public function testInsert($Doff)
     {
@@ -106,6 +148,9 @@ class DoffTest extends TestCase
     /**
      * Delete function test
      * @depends testInitConstructor
+     * @covers ::select
+     * @covers ::delete
+     * @uses \SimonDevelop\Doff
      */
     public function testDelete($Doff)
     {
@@ -122,6 +167,8 @@ class DoffTest extends TestCase
     /**
      * Fusion function test
      * @depends testInitConstructor
+     * @covers ::fusion
+     * @uses \SimonDevelop\Doff
      */
     public function testFusion($Doff)
     {
@@ -182,6 +229,8 @@ class DoffTest extends TestCase
     /**
      * Fission function test
      * @depends testInitConstructor
+     * @covers ::fission
+     * @uses \SimonDevelop\Doff
      */
     public function testFission($Doff)
     {
@@ -225,6 +274,9 @@ class DoffTest extends TestCase
     /**
      * Remove and setData function test
      * @depends testInitConstructor
+     * @covers ::setData
+     * @covers ::remove
+     * @uses \SimonDevelop\Doff
      */
     public function testRemoveAndSetData($Doff)
     {
@@ -243,6 +295,9 @@ class DoffTest extends TestCase
     /**
      * Getters and Setters test
      * @depends testInitConstructor
+     * @covers ::getData
+     * @covers ::getChmod
+     * @uses \SimonDevelop\Doff
      */
     public function testGetterSetter($Doff)
     {
