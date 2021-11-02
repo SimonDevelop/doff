@@ -31,7 +31,7 @@
   "require-dev": {
     "squizlabs/php_codesniffer": "4.0.x-dev",
     "phpunit/phpunit": "^9.5.8",
-    "phpstan/phpstan": "^0.12.94"
+    "phpstan/phpstan": "^0.12.94 || ^1.0.0"
   },
   "scripts": {
     "phpcs": "phpcs -s",
